@@ -1,82 +1,151 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jinnov - Événementiel</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Jinnov - Matériel & Photobooth</title>
+	<link rel="stylesheet" href="style.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+	<meta name="description" content="Jinnov - Location de photobooth et matériel événementiel (tables mange-debout, rétroprojecteur, lettres géantes, machines à popcorn / barbe à papa)">
 </head>
 <body>
-    <header>
-        <div class="nav-container">
-            <a href="index.html" class="logo">Jinnov</a>
-            <nav class="nav-menu">
-                <a href="#services">Nos Services</a>
-                <a href="#about">À Propos</a>
-                <a href="evenementiel.html">Événements</a>
-                <a href="contact.html">Contact</a>
-            </nav>
-        </div>
-    </header>
 
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Créons ensemble vos événements d'exception</h1>
-            <p>De la conception à la réalisation, nous donnons vie à vos projets événementiels les plus ambitieux</p>
-            <a href="contact.html" class="cta-button">Commencer votre projet</a>
-        </div>
-    </section>
+	<header class="main-header">
+		<div class="nav-container">
+			<a href="index.html" class="logo">
+				<img src="photo ju/logo et bannière/logo jinnov.jpg" alt="Jinnov" class="logo-img">
+			</a>
+			<nav class="nav-menu">
+				<a href="#hero">Accueil</a>
+				<a href="#products">Produits</a>
+				<a href="evenementiel.html">Événements</a>
+				<a href="contact.html">Contact</a>
+			</nav>
+		</div>
+	</header>
 
-    <section id="services" class="services">
-        <h2 class="section-title">Nos Services</h2>
-        <div class="services-grid">
-            <div class="service-card">
-                <i class="fas fa-calendar-alt"></i>
-                <h3>Événements d'entreprise</h3>
-                <p>Séminaires, conférences, lancements de produits et team building sur mesure.</p>
-            </div>
-            <div class="service-card">
-                <i class="fas fa-glass-cheers"></i>
-                <h3>Soirées privées</h3>
-                <p>Mariages, anniversaires, et célébrations personnalisées pour des moments inoubliables.</p>
-            </div>
-            <div class="service-card">
-                <i class="fas fa-music"></i>
-                <h3>Festivals & Concerts</h3>
-                <p>Organisation complète d'événements musicaux et culturels de toute envergure.</p>
-            </div>
-            <div class="service-card">
-                <i class="fas fa-handshake"></i>
-                <h3>Salons professionnels</h3>
-                <p>Conception et gestion de stands, coordination logistique et animation commerciale.</p>
-            </div>
-        </div>
-    </section>
+	<main>
+		<section id="hero" class="hero">
+			<div class="hero-inner">
+				<div class="hero-left">
+					<h1>Donnez vie à vos événements</h1>
+					<p>Location de photobooth, matériel événementiel et animations pour créer des moments mémorables.</p>
+					<div class="hero-actions">
+						<a href="#products" class="btn btn-primary">Voir nos produits</a>
+						<a href="contact.html" class="btn btn-ghost">Demander un devis</a>
+					</div>
+				</div>
+				<div class="hero-right">
+					<div class="banner-card" style="background-image: url('photo ju/logo et bannière/bannière Jinnov.jpg')" aria-hidden="true"></div>
+				</div>
+			</div>
+		</section>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>Contact</h4>
-                <p>Email: contact@jinnov.fr</p>
-                <p>Tél: +33 (0)1 23 45 67 89</p>
-            </div>
-            <div class="footer-section">
-                <h4>Suivez-nous</h4>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h4>Adresse</h4>
-                <p>123 Avenue des Événements</p>
-                <p>75000 Paris, France</p>
-            </div>
-        </div>
-    </footer>
-    <script src="script.js"></script>
+		<section id="products" class="products">
+			<div class="container">
+				<h2 class="section-title">Nos produits phares</h2>
+				<p class="section-sub">Tout le matériel nécessaire pour vos événements — clé en main ou à la carte.</p>
+
+				<div class="grid">
+					<article class="product-card" data-product="photobooth">
+						<img src="" alt="Photobooth" />
+						<h3>Photobooth</h3>
+						<p>Cabine photo avec impression instantanée, fonds personnalisés et accessoires fun.</p>
+						<div class="card-actions">
+							<button class="btn btn-outline" data-open="photobooth">Détails</button>
+							<a href="contact.html" class="btn btn-primary small">Réserver</a>
+						</div>
+					</article>
+
+					<article class="product-card" data-product="tables">
+						<img src="" alt="Tables mange-debout" />
+						<h3>Tables mange-debout</h3>
+						<p>Tables hautes élégantes pour cocktails et réceptions, disponibles en différents styles.</p>
+						<div class="card-actions">
+							<button class="btn btn-outline" data-open="tables">Détails</button>
+							<a href="contact.html" class="btn btn-primary small">Réserver</a>
+						</div>
+					</article>
+
+					<article class="product-card" data-product="projector">
+						<img src="" alt="Rétroprojecteur" />
+						<h3>Rétroprojecteur</h3>
+						<p>Projecteur HD + écran de projection pour présentations et projections vidéo.</p>
+						<div class="card-actions">
+							<button class="btn btn-outline" data-open="projector">Détails</button>
+							<a href="contact.html" class="btn btn-primary small">Réserver</a>
+						</div>
+					</article>
+
+					<article class="product-card" data-product="giant-numbers">
+						<img src="" alt="Chiffres géants" />
+						<h3>Chiffres géants</h3>
+						<p>Chiffres lumineux pour anniversaires, mariages et événements commémoratifs.</p>
+						<div class="card-actions">
+							<button class="btn btn-outline" data-open="giant-numbers">Détails</button>
+							<a href="contact.html" class="btn btn-primary small">Réserver</a>
+						</div>
+					</article>
+
+					<article class="product-card" data-product="cotton-popcorn">
+						<img src="" alt="Popcorn et barbe à papa" />
+						<h3>Machines à popcorn & barbe à papa</h3>
+						<p>Machines rétro pour une touche récréative et gourmande lors de vos événements.</p>
+						<div class="card-actions">
+							<button class="btn btn-outline" data-open="cotton-popcorn">Détails</button>
+							<a href="contact.html" class="btn btn-primary small">Réserver</a>
+						</div>
+					</article>
+				</div>
+			</div>
+		</section>
+
+		<section class="why">
+			<div class="container">
+				<h2>Pourquoi choisir Jinnov ?</h2>
+				<ul class="why-list">
+					<li>Matériel de qualité, entretenu et testé</li>
+					<li>Livraison & installation sur site</li>
+					<li>Options personnalisées (branding, fonds, animations)</li>
+				</ul>
+			</div>
+		</section>
+	</main>
+
+	<footer>
+		<div class="footer-inner">
+			<div class="col">
+				<h4>Contact</h4>
+				<p>Email: contact@jinnov.fr</p>
+				<p>Tél: +33 (0)1 23 45 67 89</p>
+			</div>
+			<div class="col">
+				<h4>Suivez-nous</h4>
+				<div class="social-links">
+					<a href="#"><i class="fab fa-facebook"></i></a>
+					<a href="#"><i class="fab fa-instagram"></i></a>
+					<a href="#"><i class="fab fa-linkedin"></i></a>
+				</div>
+			</div>
+			<div class="col">
+				<h4>Mentions</h4>
+				<a href="mentionLegale.html">Mentions légales</a>
+			</div>
+		</div>
+	</footer>
+
+	<!-- Modal template -->
+	<div id="product-modal" class="modal" aria-hidden="true">
+		<div class="modal-dialog">
+			<button class="modal-close" aria-label="Fermer">&times;</button>
+			<div class="modal-body">
+				<h3 id="modal-title"></h3>
+				<p id="modal-desc"></p>
+			</div>
+		</div>
+	</div>
+
+	<script src="script.js"></script>
 </body>
 </html>

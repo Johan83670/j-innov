@@ -1,102 +1,74 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Événements - Jinnov</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Jinnov — Mes réalisations</title>
+	<link rel="stylesheet" href="style.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+	<meta name="description" content="Affiches, faire‑parts, livrets pédagogiques et identités visuelles — quelques projets récents.">
 </head>
 <body>
-    <header>
-        <div class="nav-container">
-            <a href="index.html" class="logo">Jinnov</a>
-            <nav class="nav-menu">
-                <a href="index.html#services">Nos Services</a>
-                <a href="evenementiel.html">Événements</a>
-                <a href="contact.html">Contact</a>
-            </nav>
-        </div>
-    </header>
 
-    <section class="events-section">
-        <h2 class="section-title">Nos Événements</h2>
-        
-        <div class="filters">
-            <button class="filter-btn active">Tous</button>
-            <button class="filter-btn">Entreprise</button>
-            <button class="filter-btn">Privé</button>
-            <button class="filter-btn">Festival</button>
-            <button class="filter-btn">Salon</button>
-        </div>
+	<header class="main-header">
+		<div class="nav-container">
+			<a href="index.html" class="logo"><img src="photo ju/logo et bannière/logo jinnov.jpg" alt="Jinnov" class="logo-img"></a>
+			<nav class="nav-menu">
+				<a href="index.html#hero">Accueil</a>
+				<a href="index.html#products">Produits</a>
+				<a href="evenementiel.html">Événements</a>
+				<a href="contact.html">Contact</a>
+			</nav>
+		</div>
+	</header>
 
-        <div class="events-grid">
-            <div class="event-card">
-                <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-4.0.3" alt="Conférence Tech" class="event-image">
-                <div class="event-content">
-                    <div class="event-date">15 Décembre 2025</div>
-                    <h3 class="event-title">Conférence Tech Innovation</h3>
-                    <p class="event-description">Une journée dédiée aux dernières innovations technologiques avec des speakers de renom.</p>
-                    <a href="#" class="event-link">En savoir plus</a>
-                </div>
-            </div>
+	<main style="padding-top:110px;">
+		<section class="portfolio" aria-labelledby="portfolio-title">
+			<div class="container">
+				<h2 id="portfolio-title">Nos services</h2>
+				<p class="portfolio-sub">Tout les services adaptée à vos usages.</p>
 
-            <div class="event-card">
-                <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3" alt="Festival Musique" class="event-image">
-                <div class="event-content">
-                    <div class="event-date">20-22 Juillet 2026</div>
-                    <h3 class="event-title">Festival d'été</h3>
-                    <p class="event-description">Trois jours de musique en plein air avec les meilleurs artistes du moment.</p>
-                    <a href="#" class="event-link">En savoir plus</a>
-                </div>
-            </div>
+				<div class="portfolio-grid">
+					<a class="tile large-tile" href="evenementiel_photobooth.html" aria-label="Photobooth">
+						<img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1400&q=60" alt="Photobooth">
+						<div class="tile-caption">Photobooth</div>
+					</a>
 
-            <div class="event-card">
-                <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3" alt="Gala" class="event-image">
-                <div class="event-content">
-                    <div class="event-date">31 Décembre 2025</div>
-                    <h3 class="event-title">Gala de fin d'année</h3>
-                    <p class="event-description">Une soirée exceptionnelle pour célébrer la nouvelle année en grand style.</p>
-                    <a href="#" class="event-link">En savoir plus</a>
-                </div>
-            </div>
+					<div class="portfolio-right">
+						<a class="tile small-tile" href="evenementiel_tables-mange-debout.html" aria-label="Tables & mange-debout">
+							<img src="https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=60" alt="Tables mange-debout">
+							<div class="tile-caption">Tables & mange-debout</div>
+						</a>
 
-            <div class="event-card">
-                <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3" alt="Salon Pro" class="event-image">
-                <div class="event-content">
-                    <div class="event-date">5-7 Mars 2026</div>
-                    <h3 class="event-title">Salon des Professionnels</h3>
-                    <p class="event-description">Le rendez-vous incontournable des professionnels du secteur.</p>
-                    <a href="#" class="event-link">En savoir plus</a>
-                </div>
-            </div>
-        </div>
-    </section>
+						<a class="tile small-tile" href="evenementiel_projecteur.html" aria-label="Projecteur">
+							<img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=60" alt="Projecteur">
+							<div class="tile-caption">Projecteur & écran</div>
+						</a>
 
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h4>Contact</h4>
-                <p>Email: contact@jinnov.fr</p>
-                <p>Tél: +33 (0)1 23 45 67 89</p>
-            </div>
-            <div class="footer-section">
-                <h4>Suivez-nous</h4>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                </div>
-            </div>
-            <div class="footer-section">
-                <h4>Adresse</h4>
-                <p>123 Avenue des Événements</p>
-                <p>75000 Paris, France</p>
-            </div>
-        </div>
-    </footer>
-    <script src="script.js"></script>
+						<a class="tile small-tile" href="evenementiel_popcorn.html" aria-label="Popcorn et barbe à papa">
+							<img src="https://images.unsplash.com/photo-1497032628192-86f99bcd76bc?auto=format&fit=crop&w=1200&q=60" alt="Machines gourmandes">
+							<div class="tile-caption">Popcorn & barbe à papa</div>
+						</a>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer>
+		<div class="footer-inner">
+			<div class="col">
+				<h4>Contact</h4>
+				<p>Email: contact@jinnov.fr</p>
+				<p>Tél: +33 (0)1 23 45 67 89</p>
+			</div>
+			<div class="col">
+				<h4>Mentions</h4>
+				<a href="mentionLegale.html">Mentions légales</a>
+			</div>
+		</div>
+	</footer>
+
+	<script src="script.js"></script>
 </body>
 </html>
