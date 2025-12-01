@@ -209,11 +209,22 @@
   const formMessage = document.getElementById('form-message');
   
   if (formMessage) {
-    // Check if message is visible (set by server-side PHP)
-    if (formMessage.textContent.trim()) {
+    // 1) Check URL params (used by album.html redirects)
+    const params = new URLSearchParams(window.location.search);
+    const errorParam = params.get('error');
+
+    if (errorParam) {
+      formMessage.textContent = errorParam;
       formMessage.style.display = 'block';
-      
-      // Auto-hide after 5 seconds
+    }
+
+    // 2) If already has content (server-side set), show it as well
+    if (formMessage.textContent.trim() && formMessage.style.display !== 'block') {
+      formMessage.style.display = 'block';
+    }
+
+    // Auto-hide after 5 seconds
+    if (formMessage.style.display === 'block') {
       setTimeout(() => {
         formMessage.style.transition = 'opacity 0.3s ease';
         formMessage.style.opacity = '0';
@@ -223,4 +234,49 @@
       }, 5000);
     }
   }
+})();
+
+/* ======= Album page: prefill fields from URL params ======= */
+(function() {
+  const albumForm = document.querySelector('form[action="album.php"]');
+  if (!albumForm) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const code = params.get('code');
+  const email = params.get('email');
+
+  if (code) {
+    const codeInput = albumForm.querySelector('input[name="code"]');
+    if (codeInput) codeInput.value = code;
+  }
+  if (email) {
+    const emailInput = albumForm.querySelector('input[name="email"]');
+    if (emailInput) emailInput.value = email;
+  }
+})();
+
+/* ======= Album Success Message on Submit ======= */
+(function() {
+    const albumForm = document.getElementById('albumForm');
+    if (!albumForm) return;
+
+    albumForm.addEventListener('submit', function() {
+        // On ne montre le message que si les champs requis sont remplis
+        const code = albumForm.querySelector('input[name="code"]').value;
+        const password = albumForm.querySelector('input[name="password"]').value;
+
+        if (code && password) {
+            // On attend un tout petit peu pour que la soumission du formulaire soit initiée
+            setTimeout(() => {
+                const successMessage = document.getElementById('success-message');
+                const formMessage = document.getElementById('form-message');
+                
+                if (successMessage) {
+                    albumForm.style.display = 'none'; // Masque le formulaire
+                    formMessage.style.display = 'none'; // Masque les erreurs potentielles
+                    successMessage.style.display = 'block'; // Affiche le message de succès
+                }
+            }, 100); // 100ms de délai
+        }
+    });
 })();
