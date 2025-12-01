@@ -3,19 +3,15 @@
 // NOTE: This file requires a PHP-enabled host. Adjust $recipient as needed.
 
 // Configuration
-$recipient = 'johangeffpro@gmail.com';
-$siteName  = 'Jinnov';
+$config = require __DIR__ . '/contact.private.php';
 
-// Optional SMTP configuration (disabled by default). To enable, set $use_smtp = true
-$use_smtp = false;
-$smtp = [
-    'host' => 'smtp.example.com',
-    'port' => 587,
-    'user' => 'smtp-user@example.com',
-    'pass' => 'smtp-password',
-    'secure' => 'tls' // 'ssl' or 'tls' or ''
-];
-$siteName  = 'Jinnov';
+// Recipient email
+$recipient = $config['recipient'];
+$siteName  = $config['siteName'];
+
+$use_smtp = $config['smtp']['use_smtp'];
+$smtp = $config['smtp'];
+
 
 // Helper: sanitize
 function clean($s){

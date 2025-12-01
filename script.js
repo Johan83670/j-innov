@@ -1,202 +1,226 @@
-document.addEventListener('DOMContentLoaded', () => {
-  // Page loader: show on first visit in this session
-  (function(){
-    var loader = document.getElementById('site-loader');
-    if(!loader) return;
-    try{
-      var shown = sessionStorage.getItem('jinnov_loader_shown');
-      if(!shown){
-        // keep loader visible briefly then fade
-        setTimeout(function(){
-          loader.classList.add('hide');
-          loader.addEventListener('transitionend', function(){ loader.style.display = 'none'; }, {once:true});
-        }, 900);
-        sessionStorage.setItem('jinnov_loader_shown','1');
-      } else {
-        // already shown during this session: hide immediately
-        loader.style.display = 'none';
-      }
-    }catch(e){ loader.style.display = 'none'; }
-  })();
+/* ======= Background Paint Splats (scroll naturally with page) ======= */
+/* No parallax needed - splats are part of the body background and scroll normally */
 
+/* ======= Page Loader ======= */
+(function() {
+  const loader = document.getElementById('site-loader');
+  if (!loader) return;
   
-  // header change on scroll: toggle a class for smooth CSS transitions
+  const sessionKey = 'jinnov-loader-shown';
+
+  // Show loader only on first visit of the session
+  if (!sessionStorage.getItem(sessionKey)) {
+    sessionStorage.setItem(sessionKey, 'true');
+    // Loader is already visible by default
+    setTimeout(() => {
+      loader.classList.add('hide');
+    }, 1800); // Show for 1.8 seconds
+  } else {
+    // Hide immediately on subsequent visits
+    loader.classList.add('hide');
+  }
+
+  // Mark loader as fully hidden after transition
+  loader.addEventListener('transitionend', () => {
+    loader.setAttribute('aria-hidden', 'true');
+  }, { once: true });
+})();
+
+/* ======= Header Scroll Behavior ======= */
+(function() {
   const header = document.querySelector('.main-header');
-  const SCROLL_THRESHOLD = 120; // px before header becomes highlighted
+  if (!header) return;
+  
   let ticking = false;
 
-  function updateHeader() {
-    const should = window.scrollY > SCROLL_THRESHOLD;
-    header.classList.toggle('scrolled', should);
+  function updateHeaderStyle() {
+    const scrollY = window.scrollY;
+    
+    if (scrollY > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+    
     ticking = false;
   }
 
   window.addEventListener('scroll', () => {
     if (!ticking) {
-      window.requestAnimationFrame(updateHeader);
+      window.requestAnimationFrame(updateHeaderStyle);
       ticking = true;
     }
-  });
+  }, { passive: true });
+})();
 
-  // initial state on load
-  if (window.scrollY > SCROLL_THRESHOLD) header.classList.add('scrolled');
-
-  // Smooth anchor scroll for internal links
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', (e) => {
-      const href = a.getAttribute('href');
-      if (href.length > 1) {
-        e.preventDefault();
+/* ======= Smooth Anchor Links ======= */
+(function() {
+  const anchorLinks = document.querySelectorAll('a[href^="#"]');
+  
+  anchorLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      const href = this.getAttribute('href');
+      if (href !== '#' && href !== '#!') {
         const target = document.querySelector(href);
-        if (target) target.scrollIntoView({behavior:'smooth', block:'start'});
+        if (target) {
+          e.preventDefault();
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
       }
     });
   });
+})();
 
-  // Modal product details (only initialise if modal exists on the page)
+/* ======= Product Modal ======= */
+(function() {
   const modal = document.getElementById('product-modal');
+  if (!modal) return;
+  
   const modalTitle = document.getElementById('modal-title');
   const modalDesc = document.getElementById('modal-desc');
+  const closeBtn = modal.querySelector('.modal-close');
 
-  if (modal && modalTitle && modalDesc) {
-    const productData = {
-    'photobooth': {
+  // Product details database
+  const products = {
+    photobooth: {
       title: 'Photobooth',
-      desc: 'Cabine photo professionnelle, impression instantanée, fonds personnalisés, accessoires et attendant. Idéal pour créer des souvenirs immédiats.'
+      desc: 'Cabine photo professionnelle avec impression instantanée, fonds personnalisés et une large sélection d\'accessoires fun. Parfait pour mariage, anniversaire ou événement corporate.'
     },
-    'tables': {
+    tables: {
       title: 'Tables mange-debout',
-      desc: 'Tables hautes élégantes, disponibles en bois, métal ou habillage tissu. Parfaites pour cocktails et zones de réseautage.'
+      desc: 'Tables hautes élégantes pour cocktails et réceptions. Disponibles en différents styles et finitions pour s\'adapter à votre thème d\'événement.'
     },
-    'projector': {
+    projector: {
       title: 'Rétroprojecteur',
-      desc: 'Projecteur HD + écran et câblage. Nos kits assurent une projection nette pour présentations et soirées cinéma.'
+      desc: 'Projecteur HD haute luminosité + écran de projection de qualité. Idéal pour présentations d\'entreprise et projections vidéo lors d\'événements.'
     },
     'giant-numbers': {
       title: 'Chiffres géants',
-      desc: 'Chiffres lumineux (LED) pour anniversaires et mariages. Plusieurs tailles et finitions disponibles.'
+      desc: 'Chiffres lumineux personnalisables pour anniversaires, mariages et événements commémoratifs. Disponibles en plusieurs tailles et finitions.'
     },
     'cotton-popcorn': {
-      title: 'Machines Popcorn & Barbe à papa',
-      desc: 'Machines rétro pour une animation gourmande. Fournitures consommables en option (sucre, maïs soufflé).'
+      title: 'Machines à popcorn & barbe à papa',
+      desc: 'Machines rétro professionnelles pour une touche récréative et gourmande lors de vos événements. Accessoires fournis.'
     }
   };
-    document.querySelectorAll('[data-open]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const key = btn.getAttribute('data-open');
-        const data = productData[key];
-        if (!data) return;
-        modalTitle.textContent = data.title;
-        modalDesc.textContent = data.desc;
+
+  // Open modal on button click
+  document.querySelectorAll('[data-open]').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const productKey = this.getAttribute('data-open');
+      const product = products[productKey];
+      
+      if (product) {
+        modalTitle.textContent = product.title;
+        modalDesc.textContent = product.desc;
         modal.classList.add('show');
-        modal.setAttribute('aria-hidden','false');
-      });
-    });
-
-    // close modal
-    modal.addEventListener('click', (e) => {
-      if (e.target === modal || e.target.classList.contains('modal-close')) {
-        modal.classList.remove('show');
-        modal.setAttribute('aria-hidden','true');
+        modal.setAttribute('aria-hidden', 'false');
+        document.body.style.overflow = 'hidden';
       }
     });
+  });
 
-    // close with ESC
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        modal.classList.remove('show');
-        modal.setAttribute('aria-hidden','true');
-      }
-    });
+  // Close modal
+  function closeModal() {
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
   }
 
-  // --- Custom select widget: move initialization inside DOMContentLoaded ---
-  (function(){
-    var custom = document.getElementById('custom-service');
-    if(!custom) return;
-    var toggle = custom.querySelector('.custom-select-toggle');
-    var list = custom.querySelector('.custom-select-list');
-    var hidden = custom.querySelector('input[type="hidden"]');
-    var valueEl = custom.querySelector('.custom-select-value');
-    var options = Array.from(list.querySelectorAll('li'));
-    var open = false;
-    var idx = 0;
-
-    function openList(){
-      list.classList.add('show');
-      custom.setAttribute('aria-expanded','true');
-      open = true;
-      options.forEach(function(o){ o.classList.remove('highlight'); });
-      options[idx].classList.add('highlight');
-      list.focus && list.focus();
+  closeBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', function(e) {
+    if (e.target === this) {
+      closeModal();
     }
-    function closeList(){
-      list.classList.remove('show');
-      custom.setAttribute('aria-expanded','false');
-      open = false;
-    }
+  });
 
-    toggle.addEventListener('click', function(e){
-      e.preventDefault();
-      open ? closeList() : openList();
+  // Close on Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modal.classList.contains('show')) {
+      closeModal();
+    }
+  });
+})();
+
+/* ======= Custom Select Widget ======= */
+(function() {
+  const selects = document.querySelectorAll('.custom-select');
+
+  selects.forEach(selectContainer => {
+    const toggle = selectContainer.querySelector('.custom-select-toggle');
+    const list = selectContainer.querySelector('.custom-select-list');
+    const items = list.querySelectorAll('li');
+    const valueDisplay = toggle.querySelector('.custom-select-value');
+
+    // Toggle list visibility
+    toggle.addEventListener('click', () => {
+      list.classList.toggle('show');
+      toggle.setAttribute('aria-expanded', list.classList.contains('show'));
     });
 
-    options.forEach(function(opt,i){
-      opt.addEventListener('click', function(){
-        hidden.value = this.dataset.value;
-        valueEl.textContent = this.textContent;
-        idx = i;
-        closeList();
+    // Handle item selection
+    items.forEach((item, index) => {
+      item.addEventListener('click', () => {
+        valueDisplay.textContent = item.textContent;
+        item.setAttribute('aria-selected', 'true');
+        
+        // Remove selection from other items
+        items.forEach((other, otherIndex) => {
+          if (otherIndex !== index) {
+            other.setAttribute('aria-selected', 'false');
+            other.classList.remove('highlight');
+          }
+        });
+        
+        list.classList.remove('show');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+
+      // Highlight on hover
+      item.addEventListener('mouseenter', () => {
+        item.classList.add('highlight');
+      });
+      item.addEventListener('mouseleave', () => {
+        item.classList.remove('highlight');
       });
     });
 
-    // keyboard
-    custom.addEventListener('keydown', function(e){
-      if(e.key === 'ArrowDown'){
-        e.preventDefault(); idx = Math.min(options.length-1, idx+1); openList();
-        options[idx].scrollIntoView({block:'nearest'});
-      } else if(e.key === 'ArrowUp'){
-        e.preventDefault(); idx = Math.max(0, idx-1); openList();
-        options[idx].scrollIntoView({block:'nearest'});
-      } else if(e.key === 'Enter' || e.key === ' '){
-        e.preventDefault(); if(open){ options[idx].click(); } else { openList(); }
-      } else if(e.key === 'Escape'){
-        if(open){ closeList(); }
+    // Keyboard navigation
+    toggle.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        list.classList.add('show');
+        toggle.setAttribute('aria-expanded', 'true');
       }
     });
 
-    // click outside
-    document.addEventListener('click', function(ev){
-      if(!custom.contains(ev.target)) closeList();
-    });
-  })();
-
-  // Show error/success message from ?error= or ?success= in URL for forms
-  (function(){
-    try{
-      var params = new URLSearchParams(window.location.search);
-      var err = params.get('error');
-      var ok = params.get('success');
-      var box = document.getElementById('form-message');
-      if(!box) return;
-      if(err){
-        try{ err = decodeURIComponent(err); }catch(e){}
-        box.textContent = err;
-        box.style.display = 'block';
-        box.style.background = 'linear-gradient(90deg, rgba(213,21,12,0.06), rgba(217,169,79,0.03))';
-        box.style.border = '1px solid rgba(213,21,12,0.12)';
-        box.style.color = '#fff';
-      } else if(ok){
-        try{ ok = decodeURIComponent(ok); }catch(e){}
-        box.textContent = ok;
-        box.style.display = 'block';
-        box.style.background = 'linear-gradient(90deg, rgba(33,162,88,0.06), rgba(20,120,70,0.03))';
-        box.style.border = '1px solid rgba(33,162,88,0.12)';
-        box.style.color = '#fff';
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!selectContainer.contains(e.target)) {
+        list.classList.remove('show');
+        toggle.setAttribute('aria-expanded', 'false');
       }
-    }catch(e){
-      // ignore quietly
+    });
+  });
+})();
+
+/* ======= Form Message Display ======= */
+(function() {
+  const formMessage = document.getElementById('form-message');
+  
+  if (formMessage) {
+    // Check if message is visible (set by server-side PHP)
+    if (formMessage.textContent.trim()) {
+      formMessage.style.display = 'block';
+      
+      // Auto-hide after 5 seconds
+      setTimeout(() => {
+        formMessage.style.transition = 'opacity 0.3s ease';
+        formMessage.style.opacity = '0';
+        setTimeout(() => {
+          formMessage.style.display = 'none';
+        }, 300);
+      }, 5000);
     }
-  })();
-
-});
+  }
+})();

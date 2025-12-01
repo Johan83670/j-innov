@@ -1,14 +1,83 @@
 /* ======= Reset & root ======= */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html, body { height: 100%; }
+/* ======= Paint splat backgrounds - Continuous background across entire page ======= */
+/* Using body background to create one continuous layer that scrolls */
+
 body{
   font-family: 'Poppins', sans-serif;
   color: #E7E7E9;
   background: radial-gradient(1200px 600px at 10% 10%, rgba(29, 28, 28, 0.04), transparent 8%),
               linear-gradient(180deg,#18181a,#1b1a1a 80%);
+  background-attachment: fixed; /* Keep gradient fixed */
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
   -webkit-touch-callout: none;
+  position: relative;
+}
+
+/* Main continuous background layer - paint splats throughout entire page height */
+body::before{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  min-height: 100%; /* Extends across full scrollable height */
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    url('images/peinture1.png'), url('images/peinture2.png'), url('images/peinture3.png'),
+    url('images/peinture4.PNG'), url('images/peinture5.PNG'), url('images/peinture6.PNG'),
+    url('images/peinture7.PNG'), url('images/peinture1.png'), url('images/peinture2.png'),
+    url('images/peinture3.png'), url('images/peinture4.PNG'), url('images/peinture5.PNG');
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+  background-position:
+    8% 8%, 82% 25%, 48% 120%,
+    12% 50%, 74% 65%, 50% 35%,
+    86% 90%, 20% 75%, 64% 110%,
+    10% 200%, 76% 220%, 42% 280%;
+  background-size:
+    200px 200px, 280px 260px, 250px 220px,
+    160px 140px, 120px 100px, 140px 120px,
+    100px 90px, 110px 95px, 130px 110px,
+    100px 75px, 140px 105px, 110px 85px;
+  opacity: 0.35;
+  mix-blend-mode: screen;
+  will-change: none;
+  transform: translateZ(0);
+}
+
+/* Secondary layer - more splats scattered throughout the page */
+body::after{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  min-height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    url('images/peinture6.PNG'), url('images/peinture7.PNG'), url('images/peinture1.png'),
+    url('images/peinture2.png'), url('images/peinture3.png'), url('images/peinture4.PNG'),
+    url('images/peinture5.PNG'), url('images/peinture2.png'), url('images/peinture3.png'),
+    url('images/peinture6.PNG'), url('images/peinture7.PNG'), url('images/peinture1.png');
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat;
+  background-position:
+    14% 45%, 80% 55%, 40% 80%,
+    70% 120%, 30% 145%, 55% 160%,
+    16% 210%, 72% 240%, 52% 260%,
+    32% 300%, 84% 320%, 44% 350%;
+  background-size:
+    95px 72px, 85px 70px, 100px 75px,
+    110px 85px, 120px 95px, 80px 65px,
+    95px 75px, 115px 90px, 90px 70px,
+    80px 62px, 85px 68px, 95px 75px;
+  opacity: 0.38;
+  mix-blend-mode: screen;
+  will-change: none;
+  transform: translateZ(0);
 }
 
 :root{
@@ -22,6 +91,7 @@ body{
   --card-shadow: 0 12px 40px rgba(0,0,0,0.7), 0 2px 8px rgba(0,0,0,0.6);
   --glow: 0 8px 30px rgba(213,21,12,0.12);
   --radius: 14px;
+  --parallax-offset: 0px;
 }
 
 /* ======= Header ======= */
@@ -201,7 +271,32 @@ select::-ms-expand{display:none}
 #site-loader{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,#0b0b0c,#0b0b0c);z-index:9999;transition:opacity 2s ease,visibility 2s ease;opacity:1;visibility:visible}
 #site-loader.hide{opacity:0;visibility:hidden}
 .loader-logo{width:160px;height:auto;display:block;filter:drop-shadow(0 18px 50px rgba(0,0,0,0.6));transform:translateY(0);transition:transform 2s ease,opacity 2s ease}
+
 #site-loader.hide .loader-logo{transform:translateY(-6px);opacity:.85}
+
+
+
+
+@media (max-width: 920px) {
+  body::before {
+    background-position: 8% 6%, 88% 22%, 50% 60%, 12% 48%, 74% 62%, 50% 32%, 86% 58%, 20% 72%, 64% 55%, 10% 25%, 76% 62%, 42% 75%;
+    background-size: 120px 90px, 160px 120px, 140px 110px, 100px 80px, 90px 70px, 110px 85px, 80px 60px, 85px 65px, 100px 75px, 90px 70px, 110px 85px, 100px 75px;
+    opacity: 0.22;
+  }
+  body::after {
+    background-position: 14% 45%, 80% 52%, 40% 68%, 70% 75%, 30% 88%, 55% 48%, 16% 32%, 72% 58%, 52% 82%, 32% 22%, 84% 78%, 44% 38%;
+    background-size: 65px 52px, 75px 60px, 80px 62px, 90px 70px, 85px 65px, 70px 55px, 75px 60px, 80px 62px, 85px 65px, 70px 55px, 75px 60px, 85px 65px;
+    opacity: 0.18;
+  }
+}
+
+
+@media (max-width: 560px) {
+  body::before, body::after {
+    display: none;
+  }
+}
+
 
 
 
