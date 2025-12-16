@@ -1,0 +1,99 @@
+<?php
+// album.view.php — version PHP du formulaire pour inclure le token CSRF
+session_start();
+
+// Génère ou récupère le token CSRF
+if (empty($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+$csrfToken = $_SESSION['csrf_token'];
+
+// Récupère les éventuelles erreurs passées en GET
+$error = isset($_GET['error']) ? htmlspecialchars($_GET['error'], ENT_QUOTES, 'UTF-8') : '';
+$code  = isset($_GET['code'])  ? htmlspecialchars($_GET['code'], ENT_QUOTES, 'UTF-8')  : '';
+$email = isset($_GET['email']) ? htmlspecialchars($_GET['email'], ENT_QUOTES, 'UTF-8') : '';
+?>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Album photos — Jinnov</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <meta name="description" content="Téléchargez les photos de votre événement Jinnov avec votre code et mot de passe.">
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="icon" href="photo ju/logo et bannière/logo jinnov.jpg">
+</head>
+<body>
+    <header class="main-header">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><img src="photo ju/logo et bannière/logo jinnov.jpg" alt="Jinnov" class="logo-img"></a>
+            <nav class="nav-menu">
+                <a href="index.html#hero">Accueil</a>
+                <a href="index.html#products">Produits</a>
+                <a href="evenementiel.html">Événements</a>
+                <a href="album.view.php">Album</a>
+                <a href="contact.html">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="album-main">
+        <section class="prose">
+            <h1>Télécharger vos photos</h1>
+            <p class="lead">Saisissez le <strong>code</strong> et le <strong>mot de passe</strong> fournis pour récupérer l'archive ZIP de vos photos. Un email est optionnel, il nous aide à vous recontacter si besoin.</p>
+
+            <?php if ($error): ?>
+            <div id="form-message" class="form-message-error" role="alert">
+                <?= $error ?>
+            </div>
+            <?php else: ?>
+            <div id="form-message" role="status" aria-live="polite"></div>
+            <?php endif; ?>
+
+            <!-- Nouveau conteneur pour le message de succès -->
+            <div id="success-message" class="form-message-success" role="status" aria-live="polite" style="display: none;">
+                <p>🎉 C'est parti ! Votre téléchargement a commencé.</p>
+                <p class="small-text">Gardez un œil sur votre dossier de téléchargements.</p>
+            </div>
+
+            <form id="albumForm" action="album.php" method="post">
+                <!-- Token CSRF caché -->
+                <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+
+                <label for="code">Code de l'événement</label>
+                <input type="text" id="code" name="code" required placeholder="Ex : SOIREE-2025-01-17" value="<?= $code ?>">
+
+                <label for="password">Mot de passe</label>
+                <input type="password" id="password" name="password" required placeholder="Mot de passe fourni par Jinnov">
+
+                <label for="email">Votre email (optionnel)</label>
+                <input type="email" id="email" name="email" placeholder="Pour vous recontacter si besoin" value="<?= $email ?>">
+
+                <p class="muted" style="margin-top:8px">Après validation, le téléchargement de vos photos commence automatiquement.</p>
+
+                <div class="contact-actions">
+                    <button type="submit" class="btn">Télécharger le fichier ZIP</button>
+                    <a href="contact.html" class="btn btn-ghost">Besoin d'aide ?</a>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-inner">
+            <div class="col">
+                <h4>Contact</h4>
+                <p>Email: contact@jinnov.fr</p>
+            </div>
+            <div class="col">
+                <h4>Mentions</h4>
+                <a href="mentionLegale.html">Mentions légales</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

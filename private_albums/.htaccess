@@ -1,0 +1,9 @@
+# Interdire l'accès direct aux fichiers de ce dossier
+# Apache 2.4+
+Require all denied
+
+# Apache 2.2 (fallback)
+<IfModule !mod_authz_core.c>
+    Order deny,allow
+    Deny from all
+</IfModule>

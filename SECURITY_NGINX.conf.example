@@ -1,0 +1,64 @@
+# =============================================================================
+# Exemple de configuration Nginx pour sécuriser le site J-Innov
+# À adapter selon votre environnement et à inclure dans votre server block.
+# =============================================================================
+
+server {
+    listen 443 ssl http2;
+    server_name example.com;
+
+    # --- SSL ---
+    ssl_certificate     /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+    ssl_protocols       TLSv1.2 TLSv1.3;
+    ssl_ciphers         HIGH:!aNULL:!MD5;
+
+    # --- HSTS ---
+    add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+
+    # --- Headers de sécurité ---
+    add_header X-Content-Type-Options "nosniff" always;
+    add_header X-Frame-Options "DENY" always;
+    add_header Referrer-Policy "no-referrer-when-downgrade" always;
+    # add_header Content-Security-Policy "default-src 'self';" always;
+
+    root /var/www/j-innov-main;
+    index index.html index.php;
+
+    # --- Bloquer l'accès aux dossiers sensibles ---
+    location ~ ^/(private_albums|logs|\.git|\.htaccess|.*\.private\.php)/ {
+        deny all;
+        return 404;
+    }
+
+    # --- Bloquer l'accès aux fichiers de config PHP privés ---
+    location ~ \.private\.php$ {
+        deny all;
+        return 404;
+    }
+
+    # --- X-Accel-Redirect pour téléchargements protégés ---
+    # Utilisé par album.php pour servir les fichiers sans les exposer directement.
+    location /protected-albums/ {
+        internal;
+        alias /var/www/j-innov-main/private_albums/;
+    }
+
+    # --- PHP-FPM ---
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php8.2-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    # --- Désactiver le listing de répertoire ---
+    autoindex off;
+}
+
+# --- Redirection HTTP → HTTPS ---
+server {
+    listen 80;
+    server_name example.com;
+    return 301 https://$host$request_uri;
+}
