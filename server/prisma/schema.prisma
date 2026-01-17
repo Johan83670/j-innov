@@ -1,0 +1,87 @@
+// Prisma Schema for J-Innov File Management System
+// Database: SQLite (configurable via DATABASE_URL)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ===================
+// User Model
+// ===================
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("USER") // ADMIN or USER
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  assignments Assignment[]
+  auditLogs   AuditLog[]   @relation("ActorLogs")
+
+  @@map("users")
+}
+
+// ===================
+// File Model (uploaded ZIP files)
+// ===================
+model File {
+  id           String   @id @default(uuid())
+  originalName String
+  projectSlug  String
+  s3Key        String   @unique
+  sizeBytes    Int
+  sha256       String
+  uploadedAt   DateTime @default(now())
+
+  // Relations
+  assignments Assignment[]
+
+  @@index([projectSlug])
+  @@map("files")
+}
+
+// ===================
+// Assignment Model (file access permissions)
+// ===================
+model Assignment {
+  id        String   @id @default(uuid())
+  userId    String
+  fileId    String
+  createdAt DateTime @default(now())
+
+  // Relations
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  file File @relation(fields: [fileId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, fileId])
+  @@map("assignments")
+}
+
+// ===================
+// Audit Log Model (action tracking)
+// ===================
+model AuditLog {
+  id          String   @id @default(uuid())
+  actorUserId String?
+  action      String // UPLOAD, DOWNLOAD, CREATE_USER, ASSIGN_FILE, RESET_PASSWORD, LOGIN
+  targetType  String? // USER, FILE, ASSIGNMENT
+  targetId    String?
+  ipAddress   String?
+  metadata    String? // JSON string for additional data
+  createdAt   DateTime @default(now())
+
+  // Relations
+  actor User? @relation("ActorLogs", fields: [actorUserId], references: [id], onDelete: SetNull)
+
+  @@index([actorUserId])
+  @@index([action])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
