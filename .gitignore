@@ -1,3 +1,127 @@
-# Fichiers privés
+# ================================
+# FICHIERS SENSIBLES - NE PAS PUSH
+# ================================
+
+# Structure IONOS (configs serveur, credentials, logs)
+ionos-structure/
+
+# Fichiers de configuration privés
+*.private.php
 contact.private.php
 album.private.php
+config.php
+
+# ================================
+# ENVIRONMENT & SECRETS
+# ================================
+
+# Fichiers d'environnement (contiennent secrets)
+.env
+.env.*
+.env.local
+.env.development
+.env.production
+.env.*.local
+!.env.example
+
+# Clés et certificats
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*.jks
+
+# Fichiers de credentials
+credentials.json
+secrets.json
+*credentials*
+*secret*
+
+# ================================
+# NODE.JS
+# ================================
+node_modules/
+dist/
+build/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn
+
+# ================================
+# DATABASE
+# ================================
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+prisma/*.db
+prisma/*.db-journal
+/server/prisma/*.db
+/server/prisma/*.db-journal
+
+# ================================
+# IDE & EDITORS
+# ================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ================================
+# OS FILES
+# ================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# ================================
+# DOCKER & DEPLOYMENT
+# ================================
+*.tar
+*.gz
+docker-compose.override.yml
+
+# ================================
+# CACHE & TEMP
+# ================================
+.cache/
+.temp/
+.tmp/
+*.tmp
+*.temp
+.parcel-cache/
+
+# ================================
+# LOGS
+# ================================
+logs/
+*.log
+/server/prisma/logs/
+
+# ================================
+# COVERAGE & TESTS
+# ================================
+coverage/
+.nyc_output/
+
+# ================================
+# UPLOADS & USER DATA
+# ================================
+uploads/
+/public/uploads/
+
+# ================================
+# DOCUMENTATION LOCALE
+# ================================
+DOCUMENTATION.html
+
