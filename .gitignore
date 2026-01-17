@@ -2,8 +2,9 @@
 # FICHIERS SENSIBLES - NE PAS PUSH
 # ================================
 
-# Structure IONOS (configs serveur, credentials, logs)
-ionos-structure/
+# Fichiers de configuration privés IONOS
+ionos-structure/private/config/
+ionos-structure/private/logs/
 
 # Fichiers de configuration privés
 *.private.php

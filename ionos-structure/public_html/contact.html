@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Contact — Jinnov</title>
+	<link rel="stylesheet" href="style.css">
+	<link rel="icon" href="images/logo-jinnov.jpg">
+</head>
+<body>
+	<header class="main-header">
+		<div class="nav-container">
+			<a href="index.html" class="logo"><img src="images/logo-jinnov.jpg" alt="Jinnov" class="logo-img"></a>
+			<nav class="nav-menu">
+				<a href="index.html#hero">Accueil</a>
+				<a href="index.html#products">Produits</a>
+				<a href="evenementiel.html">Événements</a>
+				<a href="album.view.php">Album</a>
+				<a href="contact.html">Contact</a>
+			</nav>
+		</div>
+	</header>
+
+	<main class="contact-main">
+		<section class="prose">
+			<h1>Contactez‑nous</h1>
+			<p class="muted">Vous préparez un événement ? Dites‑nous en quelques mots ce dont vous avez besoin et nous vous recontacterons rapidement pour un devis personnalisé.</p>
+
+			<!-- message area (error/success) -->
+			<div id="form-message" role="status" aria-live="polite"></div>
+
+			<form id="contactForm" action="contact.php" method="post">
+				<label for="name">Nom & Prénom</label>
+				<input id="name" name="name" type="text" required placeholder="Votre nom">
+
+				<label for="email">Email</label>
+				<input id="email" name="email" type="email" required placeholder="votre@email.com">
+
+				<label for="phone">Tél. (optionnel)</label>
+				<input id="phone" name="phone" type="tel" placeholder="06 00 00 00 00">
+
+				<label for="custom-service">Service souhaité</label>
+				<div class="form-select-wrapper">
+					<div class="custom-select" id="custom-service" tabindex="0" role="combobox" aria-haspopup="listbox" aria-expanded="false">
+						<input type="hidden" name="service" id="service" value="Photobooth">
+						<button type="button" class="custom-select-toggle" aria-label="Sélectionner un service">
+							<span class="custom-select-value">Photobooth</span>
+							<span class="custom-select-caret">▾</span>
+						</button>
+						<ul class="custom-select-list" role="listbox" tabindex="-1">
+							<li role="option" data-value="Photobooth">Photobooth</li>
+							<li role="option" data-value="Tables & mange-debout">Tables & mange-debout</li>
+							<li role="option" data-value="Projecteur & écran">Projecteur & écran</li>
+							<li role="option" data-value="Chiffres géants / Décor">Chiffres géants / Décor</li>
+							<li role="option" data-value="Popcorn & Barbe à papa">Popcorn & Barbe à papa</li>
+							<li role="option" data-value="Autre">Autre</li>
+						</ul>
+					</div>
+				</div>
+
+				<label for="date">Date de l'événement (si connue)</label>
+				<input id="date" name="date" type="date">
+
+				<label for="message">Message / détails</label>
+				<textarea id="message" name="message" rows="6" placeholder="Lieu, horaires, nombre d'invités, options souhaitées..."></textarea>
+
+				<label class="checkbox"><input type="checkbox" id="consent" required> J'accepte que les informations saisies soient utilisées pour me recontacter (voir <a href="mentionLegale.html">mentions légales</a>).</label>
+
+				<div class="contact-actions">
+					<button type="submit" class="btn">Envoyer la demande</button>
+					<a href="evenementiel.html" class="btn btn-ghost">Voir nos services</a>
+				</div>
+			</form>
+
+		</section>
+	</main>
+
+	<footer>
+		<div class="footer-inner">
+			<div class="col">
+				<h4>Contact</h4>
+				<p>Email: contact@jinnov.fr</p>
+			</div>
+			<div class="col">
+				<h4>Mentions</h4>
+				<a href="mentionLegale.html">Mentions légales</a>
+			</div>
+		</div>
+	</footer>
+
+	<script src="script.js"></script>
+</body>
+</html>
