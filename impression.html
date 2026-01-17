@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Impression photo — Jinnov</title>
+	<link rel="stylesheet" href="style.css">
+	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+	<meta name="description" content="Imprimez vos photos d'événement Jinnov en qualité professionnelle.">
+	<link rel="icon" href="images/logo-jinnov.jpg">
+</head>
+<body>
+	<header class="main-header">
+		<div class="nav-container">
+			<a href="index.html" class="logo"><img src="images/logo-jinnov.jpg" alt="Jinnov" class="logo-img"></a>
+			<nav class="nav-menu">
+				<a href="index.html#hero">Accueil</a>
+				<a href="index.html#products">Produits</a>
+				<a href="index.html#events">Événements</a>
+				<a href="album.view.php">Album</a>
+				<a href="impression.html">Impression</a>
+				<a href="contact.html">Contact</a>
+			</nav>
+		</div>
+	</header>
+
+	<main class="impression-main">
+		<section class="prose">
+			<h1>Imprimez vos photos</h1>
+			<p class="lead">Commandez des tirages de qualité professionnelle de vos photos d'événement. Sélectionnez votre fichier ZIP, choisissez la qualité souhaitée et recevez vos impressions chez vous.</p>
+
+			<!-- Error message -->
+			<div id="errorMessage" class="error-message" role="alert"></div>
+
+			<!-- Upload zone -->
+			<div id="uploadZone" class="upload-zone">
+				<i class="fas fa-cloud-upload-alt"></i>
+				<p><strong>Glissez votre fichier ZIP ici</strong><br>ou cliquez pour sélectionner</p>
+				<p class="file-types">Format accepté : .zip (max 500 Mo)</p>
+				<input type="file" id="fileInput" accept=".zip" hidden>
+			</div>
+
+			<!-- File info display -->
+			<div id="fileInfo" class="file-info">
+				<i class="fas fa-file-archive"></i>
+				<div class="file-details">
+					<div id="fileName" class="file-name"></div>
+					<div id="fileSize" class="file-size"></div>
+				</div>
+				<button type="button" id="removeFile" class="remove-file">
+					<i class="fas fa-times"></i> Retirer
+				</button>
+			</div>
+
+			<!-- Order section (shown after file selected) -->
+			<div id="orderSection" class="order-section">
+				<h3>Votre commande</h3>
+
+				<!-- Quality options -->
+				<div class="quality-options">
+					<div class="quality-option selected" data-quality="standard" data-price="15">
+						<h4><i class="fas fa-print"></i> Standard</h4>
+						<p>Impression photo classique sur papier brillant, idéale pour les souvenirs du quotidien.</p>
+						<div class="price">15€ <span class="price-unit">/ lot</span></div>
+					</div>
+					<div class="quality-option" data-quality="premium" data-price="25">
+						<h4><i class="fas fa-star"></i> Premium grain</h4>
+						<p>Papier texturé haut de gamme avec un rendu artistique et une finition mate élégante.</p>
+						<div class="price">25€ <span class="price-unit">/ lot</span></div>
+					</div>
+				</div>
+
+				<!-- Quantity -->
+				<div class="quantity-row">
+					<label>Quantité de lots :</label>
+					<div class="quantity-controls">
+						<button type="button" class="quantity-btn" id="decreaseQty">−</button>
+						<span id="quantityValue" class="quantity-value">1</span>
+						<button type="button" class="quantity-btn" id="increaseQty">+</button>
+					</div>
+				</div>
+
+				<!-- Promo code -->
+				<div class="promo-section">
+					<label for="promoCode">Code promo</label>
+					<div class="promo-row">
+						<input type="text" id="promoCode" placeholder="Ex: JINNOV20">
+						<button type="button" id="applyPromo" class="btn btn-outline">Appliquer</button>
+					</div>
+					<div id="promoApplied" class="promo-applied">
+						<i class="fas fa-check-circle"></i>
+						<span>Code JINNOV20 appliqué : -20%</span>
+					</div>
+				</div>
+
+				<!-- Order summary -->
+				<div class="order-summary">
+					<h4>Récapitulatif</h4>
+					<div class="summary-row">
+						<span id="summaryQuality">Standard × 1</span>
+						<span id="summarySubtotal">15,00 €</span>
+					</div>
+					<div class="summary-row" id="discountRow" style="display: none;">
+						<span>Réduction (20%)</span>
+						<span id="summaryDiscount" class="discount">−3,00 €</span>
+					</div>
+					<div class="summary-row total">
+						<span>Total</span>
+						<span id="summaryTotal">15,00 €</span>
+					</div>
+				</div>
+
+				<!-- Pay button -->
+				<button type="button" id="payBtn" class="btn btn-primary pay-btn">
+					<i class="fas fa-lock"></i> Payer
+				</button>
+			</div>
+		</section>
+	</main>
+
+	<!-- Success modal -->
+	<div id="successModal" class="success-modal">
+		<div class="success-content">
+			<i class="fas fa-check-circle"></i>
+			<h2>Paiement simulé</h2>
+			<p>Commande envoyée ! Vous recevrez vos tirages sous 5-7 jours ouvrés.</p>
+			<a href="index.html" class="btn btn-primary">Retour à l'accueil</a>
+		</div>
+	</div>
+
+	<footer>
+		<div class="footer-inner">
+			<div class="col">
+				<h4>Contact</h4>
+				<p>Email: contact@jinnov.fr</p>
+				<p>Tél: +33 (0)1 23 45 67 89</p>
+			</div>
+			<div class="col">
+				<h4>Suivez-nous</h4>
+				<div class="social-links">
+					<a href="#"><i class="fab fa-facebook"></i></a>
+					<a href="#"><i class="fab fa-instagram"></i></a>
+					<a href="#"><i class="fab fa-linkedin"></i></a>
+				</div>
+			</div>
+			<div class="col">
+				<h4>Mentions</h4>
+				<a href="mentionLegale.html">Mentions légales</a>
+			</div>
+		</div>
+	</footer>
+
+	<script src="script.js"></script>
+	<script src="impression.js"></script>
+</body>
+</html>
