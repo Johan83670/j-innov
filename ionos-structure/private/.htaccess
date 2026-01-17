@@ -1,4 +1,4 @@
-# Interdire l'accès direct aux fichiers de ce dossier
+# Interdire tout accès direct aux fichiers privés
 # Apache 2.4+
 Require all denied
 

@@ -1,29 +1,34 @@
 <?php
-// album.php — sécurisé (logs protégés, rate-limit, CSRF, headers)
+/**
+ * album.php — sécurisé pour hébergement IONOS
+ * Les fichiers de config et albums sont HORS du dossier public_html
+ */
 session_start();
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Configuration
+// Chargement de la configuration (hors du dossier public)
 // ─────────────────────────────────────────────────────────────────────────────
-$albums = require __DIR__ . '/album.private.php';
+require_once dirname(__DIR__) . '/private/config/config.php';
 
-// Répertoire de logs protégé (doit être interdit via .htaccess / Nginx)
-define('LOG_DIR', __DIR__ . '/logs');
-if (!is_dir(LOG_DIR)) {
-    @mkdir(LOG_DIR, 0750, true);
+// Charger la liste des albums depuis le dossier privé
+$albums = require CONFIG_PATH . '/album.private.php';
+
+// Répertoire de logs (dans le dossier privé)
+if (!is_dir(LOGS_PATH)) {
+    @mkdir(LOGS_PATH, 0750, true);
 }
 
 // Rate-limit : max 5 essais par IP sur 10 minutes
 define('RATE_LIMIT_MAX', 5);
 define('RATE_LIMIT_WINDOW', 600); // secondes
-$rateLimitFile = LOG_DIR . '/rate_limit.json';
+$rateLimitFile = LOGS_PATH . '/rate_limit.json';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────────────────────────
 
 /**
- * Redirige vers album.html avec un message d'erreur.
+ * Redirige vers album.view.php avec un message d'erreur.
  */
 function redirectWithError(string $msg, string $code = '', string $email = ''): void {
     $query = http_build_query([
@@ -82,7 +87,7 @@ function isRateLimited(string $ip, string $file): bool {
  * Écrit un log de téléchargement.
  */
 function logDownload(string $code, string $email, string $ip): void {
-    $logFile = LOG_DIR . '/download_logs.txt';
+    $logFile = LOGS_PATH . '/download_logs.txt';
     $logLine = sprintf(
         "[%s] Code: %s | Email: %s | IP: %s\n",
         date('Y-m-d H:i:s'),
@@ -96,9 +101,7 @@ function logDownload(string $code, string $email, string $ip): void {
 // ─────────────────────────────────────────────────────────────────────────────
 // Envoi de headers de sécurité
 // ─────────────────────────────────────────────────────────────────────────────
-header('X-Content-Type-Options: nosniff');
-header('X-Frame-Options: DENY');
-header('Referrer-Policy: no-referrer-when-downgrade');
+setSecurityHeaders();
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Traitement
@@ -141,16 +144,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         logDownload($code, $email, $ip);
     }
 
-    // Chemin vers le zip (dossier privé protégé)
-    $filePath = __DIR__ . '/private_albums/' . basename($album['file']);
+    // Chemin vers le zip (dossier privé HORS de public_html)
+    $filePath = ALBUMS_PATH . '/' . basename($album['file']);
 
     if (!is_file($filePath)) {
         redirectWithError("Le fichier de photos est momentanément indisponible. Contactez-nous.", $code, $email);
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    // Option A : Envoi direct via readfile() (par défaut)
-    // ─────────────────────────────────────────────────────────────────────────
+    // Envoi du fichier ZIP
     header('Content-Type: application/zip');
     header('Content-Disposition: attachment; filename="' . basename($filePath) . '"');
     header('Content-Length: ' . filesize($filePath));
@@ -158,14 +159,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     header('Expires: 0');
     readfile($filePath);
     exit;
-
-    // ─────────────────────────────────────────────────────────────────────────
-    // Option B : X-Accel-Redirect (Nginx) — décommentez et adaptez si besoin
-    // ─────────────────────────────────────────────────────────────────────────
-    // header('Content-Type: application/zip');
-    // header('Content-Disposition: attachment; filename="' . basename($filePath) . '"');
-    // header('X-Accel-Redirect: /protected-albums/' . basename($album['file']));
-    // exit;
 
 } else {
     // Accès GET : générer un token CSRF et rediriger vers le formulaire
